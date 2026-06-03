@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Kernel & Drivers Mastery - Roadmap & Question Bank</title>
+<style>
+:root{--bg:#0a0c10;--bg2:#111418;--bg3:#181d24;--bg4:#1e2530;--border:#252e3d;--border2:#2e3d52;--text:#dde4f0;--muted:#6b7a99;--dim:#3d4d66;--linux:#f97316;--blue:#60a5fa;--green:#4ade80;--amber:#fbbf24;--red:#f87171;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono','Fira Code',monospace}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 24px 24px;text-align:center}
+.hero-tag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--linux);text-transform:uppercase;margin-bottom:8px}
+.hero h1{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px}
+.hero-sub{color:var(--muted);font-size:13px;margin-bottom:24px}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:20px}
+.stat{text-align:center}.stat-val{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--linux)}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:.05em}
+.overall-bar{max-width:480px;margin:0 auto 8px;height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
+.overall-fill{height:100%;background:linear-gradient(90deg,#c2410c,var(--linux));border-radius:4px;transition:width .5s}
+.overall-label{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.gh-note{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 16px;max-width:620px;margin:16px auto 0;font-size:12px;color:var(--muted)}
+.gh-note b{color:var(--text)}
+.sources-note{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:8px 16px;max-width:620px;margin:10px auto 0;font-size:11px;color:var(--muted);font-family:var(--mono)}
+.phase-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+.phase-btn{font-family:var(--mono);font-size:11px;padding:5px 14px;border:1px solid var(--border2);border-radius:4px;background:var(--bg3);color:var(--muted);cursor:pointer;transition:all .15s}
+.phase-btn:hover{color:var(--text);border-color:var(--muted)}
+.phase-btn.active{color:var(--linux);border-color:var(--linux);background:rgba(249,115,22,.07)}
+.module-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap}
+.mod-btn{font-family:var(--mono);font-size:10px;padding:4px 10px;border:1px solid var(--border);border-radius:3px;background:transparent;color:var(--dim);cursor:pointer;transition:all .15s}
+.mod-btn:hover{color:var(--muted);border-color:var(--border2)}
+.mod-btn.done{border-color:var(--green);color:var(--green)}
+.mod-btn.partial{border-color:var(--amber);color:var(--amber)}
+.content{max-width:1100px;margin:0 auto;padding:24px}
+.phase-header{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--linux);text-transform:uppercase;padding:16px 0 8px;margin-top:8px}
+.module{background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:20px;overflow:hidden}
+.module-head{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;user-select:none;transition:background .15s}
+.module-head:hover{background:var(--bg3)}
+.module-num{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--dim);width:32px;flex-shrink:0}
+.module-icon{font-size:20px;flex-shrink:0}
+.module-info{flex:1}.module-title{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text)}
+.module-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.module-right{text-align:right;flex-shrink:0}
+.mod-count{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.mod-badge{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:3px;margin-top:3px;display:inline-block}
+.badge-ns{background:rgba(61,77,102,.4);color:var(--dim)}
+.badge-ip{background:rgba(251,191,36,.1);color:var(--amber)}
+.badge-done{background:rgba(74,222,128,.1);color:var(--green)}
+.module-chevron{color:var(--dim);font-size:11px;transition:transform .2s;flex-shrink:0}
+.module.open .module-chevron{transform:rotate(90deg)}
+.mod-bar{height:3px;background:var(--bg4);margin:0 20px}
+.mod-bar-fill{height:100%;background:var(--linux);transition:width .4s}
+.module.open .mod-bar{display:none}
+.module-body{display:none;border-top:1px solid var(--border)}
+.module.open .module-body{display:block}
+.q-table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--bg3)}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th:first-child{width:42px;text-align:center}th:nth-child(2){width:44px}
+th:nth-child(4){width:80px}th:nth-child(5){width:90px}th:last-child{width:80px}
+tbody tr{border-bottom:1px solid rgba(37,46,61,.6);transition:background .1s;cursor:pointer}
+tbody tr:hover{background:rgba(249,115,22,.03)}
+tbody tr.checked{opacity:.45}tbody tr:last-child{border-bottom:none}
+td{padding:9px 12px;font-size:13px;vertical-align:middle}td:first-child{text-align:center}
+.cb{width:16px;height:16px;border:1.5px solid var(--border2);border-radius:3px;display:inline-flex;align-items:center;justify-content:center}
+tr.checked .cb{background:var(--linux);border-color:var(--linux)}
+.cb-check{display:none;font-size:10px;font-weight:800;color:var(--bg)}
+tr.checked .cb-check{display:block}
+.q-num{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.q-text{color:var(--text);line-height:1.5}tr.checked .q-text{text-decoration:line-through;color:var(--dim)}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;font-weight:600;letter-spacing:.04em}
+.tag-theory{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.25)}
+.tag-code{background:rgba(249,115,22,.12);color:var(--linux);border:1px solid rgba(249,115,22,.25)}
+.tag-debug{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+.tag-design{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.25)}
+.diff{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700;letter-spacing:.04em}
+.diff-B{background:rgba(74,222,128,.1);color:var(--green)}
+.diff-I{background:rgba(251,191,36,.1);color:var(--amber)}
+.diff-A{background:rgba(248,113,113,.1);color:var(--red)}
+.issue-input{width:52px;font-family:var(--mono);font-size:10px;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;color:var(--muted);padding:2px 5px;outline:none}
+.issue-input:focus{border-color:var(--linux);color:var(--text)}
+.issue-open{display:block;font-family:var(--mono);font-size:9px;color:var(--dim);text-decoration:none;margin-top:2px}
+.issue-open.active{color:var(--blue)}.issue-open.active:hover{text-decoration:underline}
+td.issue-cell{font-size:11px}
+.mod-stats{display:flex;gap:20px;padding:12px 20px;background:var(--bg3);border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center}
+.ms{color:var(--muted)}.ms span{font-family:var(--mono);color:var(--linux);font-weight:700}
+.mod-prog-bar{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:6px;align-self:center;min-width:80px}
+.mod-prog-fill{height:100%;background:var(--linux);border-radius:3px;transition:width .4s}
+.footer{text-align:center;padding:32px;font-family:var(--mono);font-size:11px;color:var(--dim);border-top:1px solid var(--border);margin-top:32px}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-tag">// complete mastery path</div>
+  <h1>LINUX KERNEL &amp; DRIVERS MASTERY</h1>
+  <div class="hero-sub">FROM BOOT TO DEVICE DRIVERS &middot; 28 MODULES &middot; FULL QUESTION BANK</div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val" id="s-modules">28</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-val" id="s-total">0</div><div class="stat-label">Questions</div></div>
+    <div class="stat"><div class="stat-val">3</div><div class="stat-label">Phases</div></div>
+    <div class="stat"><div class="stat-val">&infin;</div><div class="stat-label">Lab exercises</div></div>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-bottom:16px">
+    Foundation &mdash; OS Internals &nbsp;&middot;&nbsp; Intermediate &mdash; Kernel Subsystems &nbsp;&middot;&nbsp; Advanced &mdash; Drivers &amp; Real-Time
+  </div>
+  <div class="overall-bar"><div class="overall-fill" id="overall-fill" style="width:0%"></div></div>
+  <div class="overall-label">
+    <b id="done-count">0</b> / <b id="total-count">0</b> questions done &nbsp;
+    <b id="pct-label">0%</b> overall &nbsp;
+    <b id="mod-done">0</b> / <b id="mod-total">28</b> modules complete
+  </div>
+  <div class="sources-note">Sources merged: linux_kernel_internals &middot; ldd3_questions &middot; kernel_dev_labs &middot; lkml_concepts</div>
+  <div class="gh-note"><b>GitHub sync:</b> Export progress JSON &rarr; commit to your repo &rarr; GitHub Actions updates badge automatically.</div>
+</div>
+<nav class="phase-nav">
+  <button class="phase-btn active" onclick="filterPhase(0)">All phases</button>
+  <button class="phase-btn" onclick="filterPhase(1)">Phase 01 &middot; OS Foundations</button>
+  <button class="phase-btn" onclick="filterPhase(2)">Phase 02 &middot; Kernel Subsystems</button>
+  <button class="phase-btn" onclick="filterPhase(3)">Phase 03 &middot; Drivers &amp; Advanced</button>
+</nav>
+<div class="module-nav" id="mod-nav"></div>
+<div class="content" id="content"></div>
+<div class="footer">LINUX MASTERY &middot; 28 MODULES &middot; BUILD. LOAD. DEBUG. REPEAT.</div>
+<script>
+const MODULES = [
+{
+  id:'m01',phase:1,num:'01',icon:'🐧',
+  title:'Linux Architecture & Kernel Overview',
+  desc:'Monolithic vs microkernel, kernel space vs user space, syscall interface, kernel versions.',
+  qs:[
+  ['What is the difference between monolithic and microkernel architectures? Where does Linux fall and what are the tradeoffs?','T','B'],
+  ['Explain the distinction between kernel space and user space. Why does the CPU enforce this separation?','T','B'],
+  ['What is a system call? Trace the full path of the read() syscall from user space through the kernel to a return value.','T','B'],
+  ['What is the Linux kernel version numbering scheme? What do the major, minor, and patch numbers mean?','T','B'],
+  ['What is VDSO (Virtual Dynamic Shared Object) and how does it speed up certain syscalls?','T','B'],
+  ['Explain the role of the init process (PID 1) and how it relates to all other processes on the system.','T','B'],
+  ['What is the difference between CONFIG_PREEMPT, CONFIG_PREEMPT_VOLUNTARY, and CONFIG_PREEMPT_NONE? When would you choose each?','T','B'],
+  ['What is the difference between a kernel module and a built-in kernel feature? What are the tradeoffs?','T','B'],
+  ['Describe the layout of a compiled Linux kernel: vmlinux, vmlinuz, bzImage, zImage. What is each?','T','B'],
+  ['What is the kernel ring buffer? How do you read it and what information does it contain?','T','B'],
+  ['Write a C program that makes a raw syscall using the syscall() wrapper for getpid() and write(). Verify the result matches the libc wrappers.','C','B'],
+  ['Write a kernel module that prints Hello from kernel space to dmesg on load and Goodbye on unload. Compile and test with insmod/rmmod.','C','B'],
+  ['Use strace to trace all syscalls made by ls /tmp. Count the unique syscall types and explain what each group does.','C','B'],
+  ['Write a program that deliberately triggers a segfault in user space. Show the kernel oops message it would generate if it were a kernel bug.','C','B'],
+  ['Build a minimal Linux kernel from source: download, configure with make defconfig, build, and boot it in QEMU.','C','I'],
+  ['Write a kernel module that reads /proc/cpuinfo equivalent data by calling kernel functions directly (num_online_cpus, cpu_khz).','C','I'],
+  ['Design the architecture of a minimal OS: describe which components you need before the first user process can run.','T','I'],
+  ['Explain how the kernel handles the transition from kernel mode to user mode when returning from a syscall on x86-64.','T','I'],
+  ['What is KASLR (Kernel Address Space Layout Randomization)? How does it defend against kernel exploits?','T','I'],
+  ['What is the difference between hard and soft IRQs? When does the kernel use each?','T','I']
+  ]
+},
+{
+  id:'m02',phase:1,num:'02',icon:'🥾',
+  title:'Boot Process & Kernel Initialization',
+  desc:'BIOS/UEFI, bootloaders, kernel decompression, init_task, initramfs, init systems.',
+  qs:[
+  ['Describe the Linux boot sequence from power-on to the first user-space process. Name every major stage.','T','B'],
+  ['What is the difference between BIOS and UEFI? How does each hand off control to the bootloader?','T','B'],
+  ['What is GRUB2? How does it find and load the kernel image? What is its configuration file and syntax?','T','B'],
+  ['What is initramfs (initial RAM filesystem)? Why is it needed and how does it differ from initrd?','T','B'],
+  ['Trace what happens after the kernel is decompressed: from start_kernel() to the first idle loop.','T','B'],
+  ['What is the init process? Compare SysVinit, Upstart, and systemd as PID 1 implementations.','T','B'],
+  ['What is the kernel command line? Give 5 useful parameters and explain what each does.','T','B'],
+  ['Explain what happens during the fork/exec sequence that creates the first shell after login.','T','B'],
+  ['What is early printk and why is it needed before the console is fully initialized?','T','B'],
+  ['What is the difference between __init and __initdata sections in the kernel? What happens to them after boot?','T','B'],
+  ['Add a custom kernel boot parameter using module_param() or __setup(). Print its value during boot and verify in dmesg.','C','B'],
+  ['Modify the GRUB configuration to pass extra kernel parameters. Boot with GRUB_CMDLINE_LINUX_DEFAULT modified and confirm the parameter is visible in /proc/cmdline.','C','B'],
+  ['Create a minimal initramfs from scratch using busybox. It should mount /proc and /sys, then exec a shell.','C','I'],
+  ['Write a script that extracts and lists the contents of the system initramfs image. Identify which modules are loaded early.','C','B'],
+  ['Boot Linux in QEMU with -nographic and capture the full boot log. Identify the top 5 slowest boot stages using systemd-analyze.','C','I'],
+  ['Write a kernel module that registers an __initcall and verify it runs at the correct boot stage by checking dmesg timestamps.','C','I'],
+  ['Design a minimal embedded boot sequence for a system with no disk, booting from NOR flash into a RAM-based rootfs.','T','I'],
+  ['Explain how kexec works and when you would use it over a full reboot.','T','I'],
+  ['What is the role of device tree (DTB) in ARM Linux boot? How does the bootloader pass it to the kernel?','T','I'],
+  ['Explain the difference between module_init() and late_initcall(). When would you use each?','T','B']
+  ]
+},
+{
+  id:'m03',phase:1,num:'03',icon:'⚙️',
+  title:'Processes & Scheduling',
+  desc:'task_struct, fork/exec/wait, scheduler classes, CFS, real-time scheduling, context switch.',
+  qs:[
+  ['What is task_struct? Describe its most important fields and what information it stores.','T','B'],
+  ['Explain the difference between fork(), vfork(), and clone(). When would you use each?','T','B'],
+  ['What is Copy-on-Write (COW) in the context of fork()? How does it work at the page table level?','T','B'],
+  ['What is the Completely Fair Scheduler (CFS)? How does it use a red-black tree to select the next task?','T','B'],
+  ['What is vruntime? How does CFS use it to ensure fairness across tasks with different priorities?','T','B'],
+  ['What is the difference between SCHED_NORMAL, SCHED_FIFO, SCHED_RR, and SCHED_DEADLINE?','T','B'],
+  ['What is a zombie process? How is it created and how is it reaped? What happens if the parent never calls wait()?','T','B'],
+  ['Explain the lifecycle of a Linux process: states, transitions, and what triggers each transition.','T','B'],
+  ['What is a process group, session, and controlling terminal? How do they relate to job control?','T','B'],
+  ['What is load average? What do the 1-minute, 5-minute, and 15-minute values represent?','T','B'],
+  ['Write a program that forks 10 child processes, each prints its PID, then waits for all children using waitpid().','C','B'],
+  ['Write a program that demonstrates Copy-on-Write: fork, then measure the time for the parent and child to modify a large shared array.','C','B'],
+  ['Use sched_setscheduler() to set a process to SCHED_FIFO priority 50. Verify with chrt -p <pid>. Explain the dangers of real-time scheduling.','C','I'],
+  ['Write a multi-process pipeline: process A generates primes, process B filters odd primes, connected via pipes. Measure throughput.','C','I'],
+  ['Write a kernel module that hooks into the scheduler to log every context switch involving a specific process by name.','C','A'],
+  ['Use perf sched record and perf sched latency to measure scheduling latency on your system under load.','C','I'],
+  ['Implement a simple cooperative user-space thread scheduler using setjmp/longjmp and sigaltstack.','C','I'],
+  ['What is the O(1) scheduler that CFS replaced? Why was CFS considered an improvement?','T','I'],
+  ['Explain kernel preemption. What does it mean for the kernel to be preemptible and what synchronization problems does it introduce?','T','I'],
+  ['What is CPU affinity? How do you set it with taskset and sched_setaffinity()? When is it useful for real-time systems?','T','I']
+  ]
+},
+{
+  id:'m04',phase:1,num:'04',icon:'🧠',
+  title:'Memory Management — User Space',
+  desc:'Virtual memory, page tables, mmap, brk/sbrk, demand paging, memory layout.',
+  qs:[
+  ['Explain the virtual address space layout of a Linux process on x86-64: code, data, stack, heap, vdso, mmap regions.','T','B'],
+  ['What is demand paging? How does the kernel handle a page fault from user space?','T','B'],
+  ['What is the difference between anonymous mapping and file-backed mapping in mmap()?','T','B'],
+  ['Explain how brk() and sbrk() work. Why does malloc() prefer mmap() for large allocations?','T','B'],
+  ['What is the OOM killer? How does it choose which process to kill? How do you influence it with oom_score_adj?','T','B'],
+  ['What is huge pages? Explain the difference between HugeTLB pages and Transparent Huge Pages (THP).','T','B'],
+  ['What is memory overcommit in Linux? What are the three overcommit modes and when would you use each?','T','B'],
+  ['What is ASLR (Address Space Layout Randomization) in user space? How does it interact with PIE executables?','T','B'],
+  ['Explain the difference between resident set size (RSS), virtual size (VSZ), and proportional set size (PSS).','T','B'],
+  ['What is the /proc/<pid>/maps file? Describe the fields in each line.','T','B'],
+  ['Write a program that calls mmap() to map a file, modifies it, and calls msync() to write back. Verify changes in the file.','C','B'],
+  ['Write a program that deliberately causes a stack overflow. Show how to increase the stack size with setrlimit(RLIMIT_STACK, ...).','C','B'],
+  ['Write a program that allocates 10 GB of memory using malloc() on a system with less RAM. Explain why it succeeds due to overcommit, then trigger the OOM killer.','C','I'],
+  ['Use /proc/<pid>/smaps to analyze the memory footprint of a running process. Identify the largest mappings and their types.','C','I'],
+  ['Write a program that uses mmap with MAP_SHARED between two processes to communicate without copying data.','C','I'],
+  ['Implement a memory pool using a large mmap allocation. Manage sub-allocations with a free list. Benchmark vs malloc.','C','I'],
+  ['What is the difference between mlock() and mlockall()? Why would a real-time process call mlockall(MCL_CURRENT|MCL_FUTURE)?','T','I'],
+  ['Explain what happens when a copy-on-write page is written to: walk through the kernel page fault handler.','T','I'],
+  ['What is memory-mapped I/O (MMIO)? How does it differ from port I/O and why is it preferred on modern hardware?','T','I'],
+  ['Design a system where multiple processes share a large read-only dataset with zero copies. What combination of mmap flags achieves this?','T','I']
+  ]
+},
+{
+  id:'m05',phase:1,num:'05',icon:'🔒',
+  title:'Signals & IPC Fundamentals',
+  desc:'Signals, pipes, FIFOs, POSIX message queues, semaphores, shared memory.',
+  qs:[
+  ['What is a signal? List the default dispositions for SIGTERM, SIGKILL, SIGINT, SIGSEGV, and SIGCHLD.','T','B'],
+  ['What is the difference between signal() and sigaction()? Why is signal() considered unreliable?','T','B'],
+  ['What is signal masking? How do sigprocmask() and pthread_sigmask() work?','T','B'],
+  ['What is a signal handler? What functions are async-signal-safe and why does this restriction exist?','T','B'],
+  ['Explain the difference between anonymous pipes (pipe()) and named pipes (FIFOs). When would you use each?','T','B'],
+  ['What is POSIX shared memory (shm_open)? How does it differ from System V shared memory (shmget)?','T','B'],
+  ['What is a POSIX semaphore? Compare named vs unnamed semaphores and compare with System V semaphores.','T','B'],
+  ['What is a POSIX message queue? How does it differ from a pipe in terms of message boundaries and priorities?','T','B'],
+  ['What are the main IPC mechanisms in Linux? Compare pipes, message queues, shared memory, and sockets for throughput, latency, and complexity.','T','B'],
+  ['What is the signalfd() interface? How does it allow signals to be handled in an event loop?','T','B'],
+  ['Write a parent-child program using a pipe where the child generates Fibonacci numbers and the parent prints them. Handle SIGPIPE correctly.','C','B'],
+  ['Write two programs that communicate via POSIX shared memory and a semaphore: producer writes a struct, consumer reads it with proper synchronization.','C','I'],
+  ['Write a program that uses signalfd() to receive SIGINT and SIGTERM in a select()/epoll() event loop without installing signal handlers.','C','I'],
+  ['Use ipcs to inspect existing System V IPC objects on the system. Write a program that creates a message queue, sends messages, and cleans up with ipcrm.','C','B'],
+  ['Write a program that uses eventfd() as a lightweight notification mechanism between two threads. Compare latency vs a pipe.','C','I'],
+  ['Implement a Unix domain socket server that accepts connections, reads a command string, and returns a result. Use SOCK_SEQPACKET for message boundaries.','C','I'],
+  ['What is the self-pipe trick? Implement it to safely handle SIGCHLD in a select() loop.','T','I'],
+  ['Explain how the kernel delivers signals to a multi-threaded process. Which thread receives it and how is that determined?','T','I'],
+  ['What is the difference between kill(), tkill(), and tgkill()? When would you use each in a multi-threaded program?','T','I'],
+  ['Design a high-throughput IPC system for transferring 1M messages per second between two processes. Compare shared memory ring buffer vs io_uring vs Unix sockets.','T','A']
+  ]
+},
+{
+  id:'m06',phase:1,num:'06',icon:'📁',
+  title:'Filesystem & VFS Layer',
+  desc:'VFS, inodes, dentries, file descriptors, ext4, procfs, sysfs, tmpfs internals.',
+  qs:[
+  ['What is the VFS (Virtual Filesystem Switch)? What problem does it solve and how does it abstract different filesystems?','T','B'],
+  ['What is an inode? What information does it store and what is notably absent from it?','T','B'],
+  ['What is a dentry (directory entry)? How does the dentry cache work and why is it important for performance?','T','B'],
+  ['Explain the relationship between a file descriptor (int), a file description (struct file), and an inode.','T','B'],
+  ['What is the difference between hard links and symbolic links at the inode level?','T','B'],
+  ['What is the page cache? How does the kernel use it to buffer reads and writes to disk?','T','B'],
+  ['What is journaling in ext4? What are the three journaling modes (writeback, ordered, journal) and their tradeoffs?','T','B'],
+  ['What is tmpfs? How does it differ from a ramdisk? When would you use /dev/shm?','T','B'],
+  ['What is procfs (/proc)? Give 5 important /proc files and what they expose about kernel state.','T','B'],
+  ['What is sysfs (/sys)? How does it differ from procfs and what kernel objects does it expose?','T','B'],
+  ['Write a program that uses openat(), readlinkat(), and fstatat() to walk a directory tree without chdir(). Handle symlinks correctly.','C','B'],
+  ['Write a program that uses inotify to watch a directory for file creation, deletion, and modification events. Print each event with its filename.','C','B'],
+  ['Write a minimal FUSE filesystem that presents a virtual directory with a single file whose contents are generated on read (e.g., the current time).','C','I'],
+  ['Write a program that uses fanotify to intercept file open events on a directory. Decide whether to allow or deny access.','C','A'],
+  ['Implement a copy-on-write file copy using copy_file_range() (reflinks on supported filesystems). Measure space usage vs a regular copy.','C','I'],
+  ['Use strace and ltrace to trace filesystem operations of a program. Identify redundant stat() calls and propose optimizations.','C','I'],
+  ['Explain the difference between O_SYNC, O_DSYNC, and fsync(). When does each guarantee data is on stable storage?','T','I'],
+  ['What is the difference between write() returning and the data being on disk? What kernel mechanism bridges this gap?','T','I'],
+  ['What is an overlay filesystem? How does Docker use overlayfs to layer container images?','T','I'],
+  ['Design a high-performance logging filesystem for an embedded device with no battery backup. What durability vs performance tradeoffs would you make?','T','A']
+  ]
+},
+{
+  id:'m07',phase:1,num:'07',icon:'🔌',
+  title:'System Calls Deep Dive',
+  desc:'syscall table, entry/exit, seccomp, ptrace, audit, adding a new syscall.',
+  qs:[
+  ['Walk through the full x86-64 syscall mechanism: from the syscall instruction through the kernel entry point, dispatch, and sysret.','T','B'],
+  ['What is the syscall table? Where is it defined in the kernel source and how is it indexed?','T','B'],
+  ['What is seccomp? Explain the difference between SECCOMP_MODE_STRICT and SECCOMP_MODE_FILTER.','T','B'],
+  ['What is a BPF program in the context of seccomp? Write a seccomp-BPF filter that allows only read, write, exit, and sigreturn.','T','I'],
+  ['What is ptrace()? How does strace use it to intercept syscalls? What are the performance implications?','T','B'],
+  ['What is the audit subsystem? How does auditd intercept syscalls and log them without ptrace overhead?','T','B'],
+  ['Explain how the kernel validates user-space pointers passed to syscalls. What is access_ok() and why is it not sufficient alone?','T','I'],
+  ['What is TOCTOU (Time-of-Check to Time-of-Use)? Give a concrete filesystem syscall example.','T','I'],
+  ['What is the purpose of the __user annotation in kernel code? How does sparse use it to find bugs?','T','B'],
+  ['What is copy_to_user() and copy_from_user()? Why must kernel code use these instead of memcpy() for user data?','T','B'],
+  ['Write a seccomp filter using libseccomp that allows a list of syscalls and kills the process on any other. Apply it to a child process.','C','I'],
+  ['Write a program using ptrace to implement a minimal syscall tracer that prints syscall number, arguments, and return value.','C','I'],
+  ['Add a new syscall to the Linux kernel in a VM: define it in the syscall table, implement it in a .c file, rebuild, and call it from user space.','C','A'],
+  ['Use strace -k to capture stack traces at each syscall. Identify which library function triggers the most system calls in a Python program.','C','I'],
+  ['Write a LD_PRELOAD library that intercepts open() and redirects all file opens from /etc to a shadow directory.','C','I'],
+  ['Use bpftrace to write a one-liner that logs every execve() syscall with its arguments and the calling process name.','C','I'],
+  ['Explain the vDSO mechanism in detail: which syscalls are in the vDSO on x86-64, how is the page mapped, and how does gettimeofday() avoid a kernel crossing?','T','A'],
+  ['What is eBPF? How does it differ from classic BPF and what does it allow you to do at the syscall level?','T','I'],
+  ['What are io_uring and its submission/completion queues? How does it reduce syscall overhead for I/O-intensive workloads?','T','I'],
+  ['Design a syscall auditing system for a high-security embedded device that must log all privileged operations with cryptographic integrity.','T','A']
+  ]
+},
+{
+  id:'m08',phase:1,num:'08',icon:'🧵',
+  title:'Threads & Kernel Synchronization',
+  desc:'pthreads, kernel mutexes, spinlocks, RCU, memory barriers, lockdep.',
+  qs:[
+  ['How does Linux implement threads? What is the relationship between a thread and a task_struct?','T','B'],
+  ['What is the difference between a kernel mutex, a spinlock, and a semaphore? When would you use each?','T','B'],
+  ['What is RCU (Read-Copy-Update)? Explain the publish-subscribe model and when the grace period allows memory reclamation.','T','B'],
+  ['What is a memory barrier? Explain the difference between smp_mb(), smp_rmb(), smp_wmb(), and READ_ONCE()/WRITE_ONCE().','T','I'],
+  ['What is the Big Kernel Lock (BKL) and why was it removed? What was used to replace it?','T','B'],
+  ['What is lockdep? How does it detect potential deadlocks at runtime without actually deadlocking?','T','I'],
+  ['What is the difference between in_interrupt(), in_atomic(), and preempt_count()? Why do these matter for locking?','T','I'],
+  ['What is a seqlock? When is it more appropriate than a mutex or RCU?','T','I'],
+  ['Explain the thundering herd problem. How does Linux avoid it in accept() and epoll?','T','I'],
+  ['What is the difference between CLONE_THREAD and CLONE_VM in clone()? How does this relate to pthreads implementation?','T','B'],
+  ['Write a multi-threaded program with a deliberate data race. Compile with -fsanitize=thread and show the TSan report. Fix with an atomic.','C','B'],
+  ['Write a kernel module that uses a spinlock to protect a shared counter incremented from a timer IRQ and a work queue. Verify correctness.','C','I'],
+  ['Write a kernel module that uses RCU to protect a singly linked list. Readers walk the list without locks; writers replace nodes atomically.','C','A'],
+  ['Use lockdep_assert_held() to annotate a kernel function that requires a lock. Trigger the warning by calling it without the lock.','C','I'],
+  ['Write a user-space futex-based mutex from scratch using futex() FUTEX_WAIT and FUTEX_WAKE. Benchmark vs pthread_mutex.','C','A'],
+  ['Use perf lock record and perf lock report to find the most contended lock in a workload.','C','I'],
+  ['Explain the A-B-A problem in lock-free programming. How do hazard pointers and tagged pointers each solve it?','T','A'],
+  ['What is priority inversion? How does Linux implement priority inheritance for RT mutexes?','T','I'],
+  ['What is the difference between spin_lock_irq() and spin_lock_irqsave()? When must you use irqsave?','T','I'],
+  ['Design the locking strategy for a kernel subsystem that handles network packets: the per-CPU fast path must be lock-free, but the slow path can use a mutex.','T','A']
+  ]
+},
+{
+  id:'m09',phase:2,num:'09',icon:'💾',
+  title:'Kernel Memory Management',
+  desc:'Page allocator, slab/slub, kmalloc, vmalloc, DMA, CMA, memory zones.',
+  qs:[
+  ['What are the Linux memory zones (ZONE_DMA, ZONE_DMA32, ZONE_NORMAL, ZONE_HIGHMEM)? Why do they exist?','T','B'],
+  ['What is the buddy allocator? How does it manage pages and minimize fragmentation?','T','B'],
+  ['What is the slab allocator? What problem does it solve over the buddy allocator for small objects?','T','I'],
+  ['What is the difference between kmalloc(), kzalloc(), vmalloc(), and vfree()? When would you use each?','T','B'],
+  ['What is GFP flags? Explain GFP_KERNEL, GFP_ATOMIC, GFP_DMA, and GFP_NOWAIT. Which can you use in interrupt context?','T','B'],
+  ['What is memory compaction? When does the kernel trigger it and what does it do?','T','I'],
+  ['What is CMA (Contiguous Memory Allocator)? Why is it needed and which drivers use it?','T','I'],
+  ['What is NUMA (Non-Uniform Memory Access)? How does the kernel schedule memory allocations for NUMA awareness?','T','I'],
+  ['What is the kswapd daemon? What triggers it and what does it do to reclaim memory?','T','I'],
+  ['What is memory-mapped I/O in the kernel? How do ioremap() and ioremap_nocache() differ?','T','I'],
+  ['Write a kernel module that allocates memory using kmalloc() and kmem_cache_create(). Print the physical address of each allocation using virt_to_phys().','C','I'],
+  ['Write a kernel module that demonstrates GFP_ATOMIC failure in interrupt context by allocating a very large buffer in a timer callback.','C','I'],
+  ['Write a kernel module that uses DMA API: dma_alloc_coherent(), dma_map_single(), and dma_sync_single_for_cpu(). Explain the cache coherency implications.','C','A'],
+  ['Use /proc/buddyinfo and /proc/meminfo to analyze kernel memory fragmentation. Trigger compaction with echo 1 > /proc/sys/vm/compact_memory and observe.','C','I'],
+  ['Implement a simple slab-like memory pool in kernel space using kmalloc for backing and a free list for sub-allocation. Benchmark throughput.','C','A'],
+  ['Use kmemleak to detect a memory leak in a kernel module. Write the leaking module, run kmemleak scan, and fix the leak.','C','I'],
+  ['Explain the difference between high memory and low memory on 32-bit ARM Linux. Why does 64-bit Linux eliminate this distinction?','T','I'],
+  ['What is transparent huge page (THP) support in the kernel? How does khugepaged work and what workloads benefit?','T','I'],
+  ['What is memory hotplug? How does it work and why is it useful in cloud virtualization?','T','A'],
+  ['Design the memory subsystem for an embedded system with 256 MB RAM, no swap, and hard real-time requirements. What allocator settings and OOM strategies would you use?','T','A']
+  ]
+},
+{
+  id:'m10',phase:2,num:'10',icon:'⏱️',
+  title:'Interrupts, IRQs & Timers',
+  desc:'Interrupt handling, IRQ descriptors, softirqs, tasklets, workqueues, hrtimers.',
+  qs:[
+  ['What is an interrupt? Distinguish between hardware interrupts, software interrupts (traps/exceptions), and NMIs.','T','B'],
+  ['What is the interrupt descriptor table (IDT) on x86? How does the CPU find and invoke the correct handler?','T','B'],
+  ['What is interrupt sharing? How do multiple devices share a single IRQ line (IRQF_SHARED)?','T','B'],
+  ['What is the split interrupt handler model (top half / bottom half)? Why is this division necessary?','T','B'],
+  ['What is the difference between softirqs, tasklets, and workqueues? When would you use each?','T','B'],
+  ['What is IRQ threading (IRQF_NO_THREAD vs threaded IRQs)? What does CONFIG_THREADIRQS do?','T','I'],
+  ['What is a high-resolution timer (hrtimer)? How does it differ from the traditional jiffy-based timer wheel?','T','B'],
+  ['What is the NO_HZ (tickless) kernel? How does dynamic tick reduce power consumption?','T','I'],
+  ['What is IRQ affinity? How do you pin IRQs to specific CPUs using /proc/irq/<n>/smp_affinity?','T','I'],
+  ['What is an MSI (Message Signaled Interrupt)? How does it differ from a pin-based IRQ and why is it preferred for PCIe?','T','I'],
+  ['Write a kernel module that registers a timer using timer_setup() and mod_timer(). Have it fire every second and print a counter to dmesg.','C','B'],
+  ['Write a kernel module that requests an IRQ with request_irq(), handles it in the top half, and defers work to a tasklet. Use a GPIO or a timer as the interrupt source.','C','I'],
+  ['Write a kernel module that measures interrupt latency using ktime_get() in the IRQ handler. Log the min/max/average latency over 1000 interrupts.','C','I'],
+  ['Write a kernel module using an hrtimer to fire with nanosecond precision. Measure the actual resolution achieved on your hardware.','C','I'],
+  ['Use /proc/interrupts to identify the most active interrupt source on your system during a network-intensive workload. Analyze with irqbalance.','C','B'],
+  ['Use perf irq-stat to analyze interrupt distribution across CPUs. Pin the NIC interrupt to a specific CPU and measure the latency change.','C','I'],
+  ['Explain interrupt coalescing (NAPI) in network drivers. How does it reduce CPU overhead for high-speed networking?','T','I'],
+  ['What is the difference between disable_irq() and local_irq_disable()? When would you use each?','T','I'],
+  ['What is a spurious interrupt? How does the kernel handle it?','T','I'],
+  ['Design the interrupt architecture for an embedded RTOS-style system where IRQ latency must be under 10 microseconds. What kernel config and driver design choices achieve this?','T','A']
+  ]
+},
+{
+  id:'m11',phase:2,num:'11',icon:'🔧',
+  title:'Kernel Modules & Kernel API',
+  desc:'Module structure, module_param, symbol exports, EXPORT_SYMBOL, kernel linked lists, kfifo.',
+  qs:[
+  ['What is a kernel module? Describe its basic structure: module_init, module_exit, MODULE_LICENSE, MODULE_AUTHOR.','T','B'],
+  ['What is EXPORT_SYMBOL() and EXPORT_SYMBOL_GPL()? How does the kernel enforce module symbol visibility?','T','B'],
+  ['What is module_param()? Write a module that accepts an integer and a string parameter at load time.','T','B'],
+  ['What are the kernel coding style guidelines? Name 5 key differences from typical user-space C style.','T','B'],
+  ['What is the kernel linked list (struct list_head)? How does list_for_each_entry() work with container_of()?','T','B'],
+  ['What is kfifo? How does it provide a lock-free FIFO for single-producer single-consumer in the kernel?','T','B'],
+  ['What is a notifier chain in the kernel? Give two examples of how the kernel uses them for event notification.','T','I'],
+  ['What is the difference between __must_check and __pure and __cold function annotations?','T','I'],
+  ['What is the rbtree (red-black tree) API in the kernel? When would you use it over a linked list?','T','B'],
+  ['What is an IDR (ID Radix tree)? What problems does it solve for kernel object ID allocation?','T','I'],
+  ['Write a kernel module that implements a character device with a kfifo backing store. Write from user space appends to the fifo; read drains it.','C','I'],
+  ['Write a kernel module that exports a function using EXPORT_SYMBOL_GPL. Write a second module that imports and calls it. Verify the dependency with modinfo.','C','B'],
+  ['Write a kernel module that uses the kernel linked list API to maintain a list of registered clients. Support add, remove, and iterate operations from procfs.','C','I'],
+  ['Write a kernel module that uses a red-black tree to store key-value pairs, insertable and queryable via a debugfs interface.','C','I'],
+  ['Use the kernel hash table API (DECLARE_HASHTABLE, hash_add, hash_for_each) to build an in-kernel lookup table keyed by PID.','C','I'],
+  ['Write a kernel module that uses kfifo to pass data between a softirq and a workqueue without locks.','C','I'],
+  ['Explain the modprobe dependency resolution system. How does depmod generate modules.dep and how does modprobe use it?','T','B'],
+  ['What is module signing? How do you configure the kernel to require signed modules and sign your own module?','T','I'],
+  ['What is the difference between IS_ERR(), PTR_ERR(), and ERR_PTR()? Why does the kernel use pointer-encoded errors?','T','B'],
+  ['Design a kernel subsystem with a clean API for registering and deregistering hardware backends at runtime. Use the bus/driver model for inspiration.','T','A']
+  ]
+},
+{
+  id:'m12',phase:2,num:'12',icon:'📡',
+  title:'Networking Subsystem',
+  desc:'sk_buff, socket API, TCP/IP stack, netfilter, network namespaces, XDP.',
+  qs:[
+  ['What is an sk_buff (socket buffer)? Describe its most important fields and how it flows through the network stack.','T','B'],
+  ['Trace the path of a TCP packet from the NIC hardware interrupt through the kernel to a user-space read() call.','T','I'],
+  ['What is the difference between a socket() system call and a raw socket? What privileges are required for each?','T','B'],
+  ['What is netfilter? Describe the five hooks (PREROUTING, INPUT, FORWARD, OUTPUT, POSTROUTING) and how iptables uses them.','T','I'],
+  ['What is a network namespace? How does Docker use network namespaces to isolate container networking?','T','I'],
+  ['What is XDP (eXpress Data Path)? How does it process packets before the normal network stack and what performance can it achieve?','T','I'],
+  ['What is NAPI (New API) for network drivers? How does polling replace interrupt-per-packet for high-throughput NICs?','T','I'],
+  ['What is the difference between SO_REUSEPORT and SO_REUSEADDR? How does SO_REUSEPORT improve multi-core server performance?','T','I'],
+  ['What is a veth pair? How is it used to connect namespaces and containers?','T','I'],
+  ['What is the difference between AF_UNIX, AF_INET, and AF_PACKET socket families and when would you use each?','T','B'],
+  ['Write a raw socket program that constructs an ICMP echo request from scratch (IP header + ICMP header). Send it and receive the reply.','C','I'],
+  ['Write a TCP server using epoll that handles 1000 concurrent connections. Measure connection setup latency and throughput.','C','I'],
+  ['Write a kernel module that registers a netfilter hook to log (but not drop) all TCP SYN packets with source IP and port.','C','I'],
+  ['Write a simple XDP program (using libbpf) that drops all UDP packets on port 5000. Load it with xdp_attach and benchmark packet processing rate.','C','A'],
+  ['Use ss, ip, and netstat to inspect socket state, routing tables, and connection statistics. Write a shell script that alerts when a port has more than 100 TIME_WAIT connections.','C','B'],
+  ['Use tcpdump with a BPF filter to capture only TCP handshakes (SYN and SYN-ACK packets). Write the BPF filter expression from scratch.','C','I'],
+  ['Explain TCP small queues (TSQ) and how they prevent the kernel from buffering too much TX data, reducing latency.','T','A'],
+  ['What is GRO (Generic Receive Offload) and GSO (Generic Segmentation Offload)? How do they reduce CPU overhead?','T','I'],
+  ['What is the difference between hard and soft IRQ affinity for a NIC? How does the RSS (Receive Side Scaling) hardware feature distribute packets across CPU cores?','T','I'],
+  ['Design a kernel bypass networking solution for a trading system requiring sub-10-microsecond latency. Compare DPDK, XDP, and kernel-TLS approaches.','T','A']
+  ]
+},
+{
+  id:'m13',phase:2,num:'13',icon:'🖥️',
+  title:'Character Device Drivers',
+  desc:'cdev, file_operations, ioctl, poll/select, device numbering, udev rules.',
+  qs:[
+  ['What is a character device? How does it differ from a block device?','T','B'],
+  ['What are major and minor device numbers? How does the kernel use them to find the correct driver?','T','B'],
+  ['What is the file_operations structure? Describe the most important function pointers it contains.','T','B'],
+  ['What is ioctl()? How is it implemented in the kernel? Why is it controversial and what are the alternatives?','T','B'],
+  ['What is the difference between copy_to_user() and __copy_to_user()? When is it safe to use the unsafe version?','T','I'],
+  ['How does the kernel implement poll() and select()? What is a wait queue and how does poll_wait() use it?','T','I'],
+  ['What is mmap() support in a character driver? How does vm_ops->fault() implement on-demand page mapping?','T','I'],
+  ['What is the llseek() file operation? How does a character driver support seeking?','T','B'],
+  ['What is udev? How do DEVNAME and udev rules create device nodes automatically when a module is loaded?','T','B'],
+  ['What is the class_create() and device_create() API? How does it integrate with sysfs and udev?','T','B'],
+  ['Write a character driver that implements a simple FIFO: write() appends data, read() drains it, blocking if empty. Register it as /dev/myfifo.','C','I'],
+  ['Extend your character driver to support poll()/select() so a user-space program can wait for data without busy-polling.','C','I'],
+  ['Add an ioctl command FIFO_GET_COUNT to your driver that returns the current number of bytes in the FIFO. Add FIFO_RESET to clear it.','C','I'],
+  ['Write a character driver that supports mmap() to share a kernel buffer directly with user space. Write a test program that reads from the mapped region.','C','A'],
+  ['Write a udev rule that creates a symlink /dev/mydev -> /dev/myfifo0 and sets group ownership to plugdev when the module is loaded.','C','I'],
+  ['Write a character driver that uses non-blocking I/O (O_NONBLOCK). Return EAGAIN from read() when no data is available.','C','I'],
+  ['Explain how the kernel serializes concurrent access to a character device from multiple user-space processes. What role does the file_operations mutex play?','T','I'],
+  ['What is the unlocked_ioctl vs compat_ioctl distinction? When does a 64-bit kernel need compat_ioctl for a 32-bit user-space process?','T','I'],
+  ['What is fasync and how does it implement SIGIO-based asynchronous notification from a driver?','T','I'],
+  ['Design a character driver for a hardware entropy source (HWRNG). It must handle the case where entropy is not immediately available and support both blocking and non-blocking reads.','T','A']
+  ]
+},
+{
+  id:'m14',phase:2,num:'14',icon:'📦',
+  title:'Block Device Drivers',
+  desc:'block_device, request queue, bio, blk-mq, SCSI layer, NVMe, I/O schedulers.',
+  qs:[
+  ['What is a block device? How does it differ from a character device in terms of kernel abstraction?','T','B'],
+  ['What is a bio (block I/O) structure? Describe its key fields and how it represents an I/O request.','T','B'],
+  ['What is the block request queue? How does it batch and merge I/O requests before sending them to hardware?','T','I'],
+  ['What is blk-mq (multi-queue block layer)? How does it improve performance over the single-queue model?','T','I'],
+  ['What are I/O schedulers? Compare CFQ, deadline/mq-deadline, and BFQ. When would you disable the scheduler (none) for NVMe?','T','I'],
+  ['What is the SCSI layer in Linux? How does it abstract different transports (USB storage, SATA, SAS, iSCSI)?','T','I'],
+  ['What is a partition table? How does the kernel discover and represent partitions of a block device?','T','B'],
+  ['What is the difference between O_DIRECT and buffered I/O? When would you use O_DIRECT and what alignment requirements does it impose?','T','I'],
+  ['What is the difference between sync_dirty_buffer() and write_dirty_buffer()? How does the kernel decide when to flush dirty page cache pages?','T','I'],
+  ['What is a loop device (/dev/loop)? How does losetup work and what is it used for?','T','B'],
+  ['Write a minimal RAM-backed block device driver using blk-mq. It should support read and write operations on a kernel-allocated buffer.','C','A'],
+  ['Write a program that uses O_DIRECT to write aligned 4KB blocks to a block device. Verify that the write bypasses the page cache using /proc/meminfo.','C','I'],
+  ['Use blktrace and blkparse to capture and analyze the I/O trace of a database write workload. Identify merge opportunities and queue depth.','C','I'],
+  ['Use fio with --ioengine=io_uring to benchmark sequential and random read IOPS on a block device. Compare with libaio and synchronous I/O.','C','I'],
+  ['Write a kernel module that intercepts bio requests for a specific block device using a bio submission hook. Log the sector number and size of every write.','C','A'],
+  ['Use smartctl to read SMART data from a drive. Write a script that alerts when reallocated sectors exceed 10.','C','B'],
+  ['Explain how the deadline I/O scheduler prevents starvation while maintaining good throughput. What are the read and write expiry parameters?','T','I'],
+  ['What is the CFQ scheduler\'s notion of time slices and service trees? How does it provide fairness between processes?','T','A'],
+  ['What is NVMe? How does its command queue model (submission/completion queues) map to blk-mq hardware queues?','T','I'],
+  ['Design a block driver for a write-combining flash storage device that must coalesce small writes into 128KB aligned blocks for optimal flash endurance.','T','A']
+  ]
+},
+{
+  id:'m15',phase:2,num:'15',icon:'🌐',
+  title:'Platform & SPI/I2C/GPIO Drivers',
+  desc:'Platform devices, device tree, SPI/I2C subsystems, GPIO, regmap, pinctrl.',
+  qs:[
+  ['What is the platform device/driver model in Linux? How does platform_driver_register() work?','T','B'],
+  ['What is the device tree? What problem does it solve for ARM and embedded Linux systems?','T','B'],
+  ['Write a device tree node for a SPI sensor with chip select 0 on SPI bus 1. Bind it to a driver using compatible = "vendor,mysensor".','T','B'],
+  ['What is the I2C subsystem? Explain i2c_client, i2c_adapter, and i2c_driver and how they relate.','T','B'],
+  ['What is the SPI subsystem? How does the kernel support both full-duplex and half-duplex SPI transactions?','T','B'],
+  ['What is the GPIO descriptor API (gpiod_get, gpiod_direction_output)? How does it differ from the legacy integer API?','T','B'],
+  ['What is pinctrl? How does it relate to GPIO? Why do embedded SoCs need a pin multiplexer subsystem?','T','I'],
+  ['What is regmap? How does it abstract register access for I2C, SPI, and MMIO-mapped peripherals?','T','I'],
+  ['What is probe deferral (EPROBE_DEFER)? How does the kernel handle drivers that depend on resources not yet available?','T','I'],
+  ['What is the regulator framework? How does a driver request a voltage supply using regulator_get()?','T','I'],
+  ['Write an I2C client driver for a temperature sensor (e.g., LM75). Implement probe(), remove(), and read the temperature register from a sysfs attribute.','C','I'],
+  ['Write a SPI driver that reads 3 bytes from a sensor at 1 MHz. Use spi_transfer and spi_message correctly. Test with a logic analyzer or spidev.','C','I'],
+  ['Write a platform driver that acquires a GPIO using the descriptor API, sets it as an output, and toggles it from a sysfs attribute.','C','B'],
+  ['Write a device tree overlay for a Raspberry Pi that enables a SPI device and binds it to your driver. Load it with dtoverlay.','C','I'],
+  ['Write a regmap-based driver that abstracts register access for a device that supports both I2C and SPI. The core driver should not know which bus it is on.','C','A'],
+  ['Use i2cdetect and i2cdump to scan an I2C bus and read registers from a connected sensor. Decode the register map from a datasheet.','C','B'],
+  ['Explain the difference between synchronous and asynchronous SPI transfers. When would you use spi_async() instead of spi_sync()?','T','I'],
+  ['What is the of_match_table in platform drivers? How does the kernel match device tree nodes to drivers using compatible strings?','T','B'],
+  ['What is devm_ memory management in drivers? How does devm_kmalloc() simplify cleanup in error paths?','T','B'],
+  ['Design a driver architecture for a complex sensor with I2C control, SPI data, and a GPIO interrupt. Describe how the three buses are coordinated in probe() and remove().','T','A']
+  ]
+},
+{
+  id:'m16',phase:2,num:'16',icon:'🔍',
+  title:'Kernel Debugging & Tracing',
+  desc:'printk, dynamic debug, KGDB, ftrace, eBPF, kprobes, KASAN, UBSAN.',
+  qs:[
+  ['What are the kernel log levels (KERN_EMERG through KERN_DEBUG)? How do you control which levels appear on the console?','T','B'],
+  ['What is dynamic debug? How do you enable specific printk messages at runtime without rebuilding the kernel?','T','B'],
+  ['What is KGDB? How do you set it up to debug a kernel over a serial port or network with GDB?','T','I'],
+  ['What is ftrace? Describe the function tracer, the function graph tracer, and how to use trace-cmd to capture a trace.','T','I'],
+  ['What is a kprobe? How does it dynamically instrument kernel functions without modifying kernel source?','T','I'],
+  ['What is KASAN (Kernel Address Sanitizer)? What types of memory bugs does it detect and what is its overhead?','T','I'],
+  ['What is UBSAN (Undefined Behavior Sanitizer) for the kernel? What classes of bugs does it find at runtime?','T','I'],
+  ['What is debugfs? How do you create a debugfs directory and file from a kernel module?','T','B'],
+  ['What is the crash utility? How do you use it with a vmcore dump to inspect kernel state after a panic?','T','I'],
+  ['What is perf? Describe how to use perf record, perf report, and perf annotate to find a hotspot in kernel code.','T','B'],
+  ['Write a kernel module that creates a debugfs directory with two files: a read-only stats file and a write-only trigger file.','C','B'],
+  ['Write a bpftrace script that traces all calls to vfs_read() and prints the filename, process name, and number of bytes requested.','C','I'],
+  ['Use kprobes via the /sys/kernel/debug/kprobes interface to attach a probe to tcp_sendmsg. Log the socket state at each call.','C','I'],
+  ['Enable KASAN in a kernel build and write a module with a deliberate use-after-free. Show the KASAN report and explain each field.','C','I'],
+  ['Use ftrace to measure the latency of a specific kernel function: enable function_graph tracer for tcp_recvmsg and calculate P50/P99 latency from the trace.','C','I'],
+  ['Use perf stat with hardware performance counters to measure cache miss rate and branch misprediction rate for a memory-intensive kernel workload.','C','I'],
+  ['Explain the difference between tracepoints, kprobes, and uprobes. When would you choose each for performance analysis?','T','I'],
+  ['What is the difference between panic(), BUG(), BUG_ON(), WARN(), and WARN_ON()? When should each be used in driver code?','T','B'],
+  ['What is kdump? How does it work and how do you configure it to capture a kernel crash dump automatically?','T','I'],
+  ['Design a production kernel tracing strategy for a network appliance that must have zero observable latency impact while logging security-relevant events.','T','A']
+  ]
+},
+{
+  id:'m17',phase:2,num:'17',icon:'🧩',
+  title:'DMA & Hardware Interaction',
+  desc:'DMA coherent/streaming, IOMMU, PCIe driver basics, BAR mapping, MSI-X.',
+  qs:[
+  ['What is DMA (Direct Memory Access)? Why is it essential for high-performance I/O and what CPU overhead does it eliminate?','T','B'],
+  ['What is the difference between coherent (consistent) DMA and streaming DMA mappings?','T','B'],
+  ['What is the IOMMU? How does it protect the system from DMA attacks by a malicious or buggy PCIe device?','T','I'],
+  ['What is a DMA mask? How does dma_set_mask_and_coherent() configure the addressing capability of a device?','T','I'],
+  ['What is cache coherency in the context of DMA? When do you need to call dma_sync_single_for_device() and dma_sync_single_for_cpu()?','T','I'],
+  ['What is a PCIe BAR (Base Address Register)? How does the kernel read and map it using pci_resource_start() and ioremap()?','T','I'],
+  ['What is an MSI-X interrupt? How does it differ from a pin-based IRQ and how do you request MSI-X vectors in a PCIe driver?','T','I'],
+  ['What is a scatter-gather DMA list? How does dma_map_sg() handle non-contiguous buffers?','T','A'],
+  ['What is memory-mapped register access in a PCIe driver? Why must you use readl()/writel() instead of direct pointer dereferencing?','T','I'],
+  ['What is the PCIe config space? How do you read vendor ID, device ID, and capability structures using pci_read_config_dword()?','T','B'],
+  ['Write a PCIe kernel driver that probes a device, maps BAR0 using pci_iomap(), reads a version register, and requests an MSI interrupt.','C','A'],
+  ['Write a DMA loopback test: allocate a DMA coherent buffer, write a pattern, trigger a DMA transfer to a second buffer, and verify the result.','C','A'],
+  ['Write a kernel module that uses dma_map_single() for a streaming DMA transfer. Correctly handle the sync calls before and after device access.','C','I'],
+  ['Use lspci -v to inspect the capabilities and BARs of a PCIe device on your system. Identify the MSI-X capability table and its size.','C','B'],
+  ['Write a PCIe driver that implements a high-throughput DMA ring: a submission ring of descriptors that the device processes, and a completion ring that the driver polls.','C','A'],
+  ['Use VFIO to pass a PCIe device through to a QEMU VM. Write a user-space driver that accesses the device BAR directly from the VM.','C','A'],
+  ['Explain IOMMU groups and why a device cannot be passed through to a VM unless all devices in its group are also passed through.','T','A'],
+  ['What is peer-to-peer DMA (P2PDMA)? How can a GPU directly read from an NVMe SSD without going through host RAM?','T','A'],
+  ['What is the difference between a DMA engine (dmaengine) and device-specific DMA? When would a driver use the dmaengine API vs its own DMA logic?','T','I'],
+  ['Design the DMA architecture for a 100 Gbps network card: how many DMA queues, what buffer sizes, and how does the driver map packets to queues?','T','A']
+  ]
+},
+{
+  id:'m18',phase:3,num:'18',icon:'⚡',
+  title:'Real-Time Linux (PREEMPT_RT)',
+  desc:'PREEMPT_RT patch, latency analysis, cyclictest, priority inheritance, RT scheduling.',
+  qs:[
+  ['What is the PREEMPT_RT patch? What kernel mechanisms does it convert to make the kernel fully preemptible?','T','I'],
+  ['What is worst-case interrupt latency (WCIL)? Why is it important for hard real-time systems?','T','I'],
+  ['What does PREEMPT_RT do to spinlocks? Why does converting them to sleeping mutexes reduce latency?','T','I'],
+  ['What is priority inheritance and why is it needed for RT mutexes in PREEMPT_RT?','T','I'],
+  ['What is cyclictest? How do you use it to measure scheduling latency on a real-time kernel?','T','B'],
+  ['What is hardware latency (hwlatdetect)? What causes it and how do you identify SMI (System Management Interrupt) latency?','T','I'],
+  ['What are CPU isolation (isolcpus, rcu_nocbs, nohz_full) kernel parameters? How do they reduce OS jitter on dedicated RT cores?','T','I'],
+  ['What is mlockall(MCL_CURRENT|MCL_FUTURE)? Why must every real-time process call it at startup?','T','I'],
+  ['What is the difference between SCHED_FIFO and SCHED_DEADLINE? When is SCHED_DEADLINE more appropriate for RT tasks?','T','I'],
+  ['What is the IRQ thread model in PREEMPT_RT? How does it allow IRQ handlers to be preempted by higher-priority tasks?','T','I'],
+  ['Run cyclictest on a standard kernel and a PREEMPT_RT kernel. Compare the maximum latency histograms under CPU-intensive and I/O-intensive load.','C','I'],
+  ['Write a real-time periodic task using SCHED_FIFO at priority 80. Use clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, ...) for precise period control. Measure jitter.','C','I'],
+  ['Isolate CPU 3 using isolcpus=3 and pin a real-time task to it. Compare cyclictest results with and without isolation under a hackbench workload.','C','I'],
+  ['Write a real-time producer-consumer using POSIX message queues. Set both threads to SCHED_FIFO. Measure end-to-end message latency at 1kHz.','C','I'],
+  ['Use hwlatdetect to detect SMI latency on your system. Identify and if possible disable the SMI source in BIOS/UEFI.','C','A'],
+  ['Use perf and ftrace to find the longest kernel section that runs with preemption disabled on a PREEMPT_RT kernel.','C','A'],
+  ['Explain the RT throttling mechanism (RT_RUNTIME_THROTTLE). What problem does it prevent and how do you configure or disable it for dedicated RT systems?','T','I'],
+  ['What is a priority inversion scenario in a real-time system? Walk through a concrete example with three tasks and explain how priority inheritance resolves it.','T','I'],
+  ['What is the difference between soft real-time and hard real-time? Give examples of Linux use cases for each.','T','B'],
+  ['Design a motor control system requiring 1kHz control loop with maximum 100 microsecond latency. Select kernel configuration, scheduling policy, memory strategy, and CPU isolation settings.','T','A']
+  ]
+},
+{
+  id:'m19',phase:3,num:'19',icon:'🔐',
+  title:'Linux Security Subsystems',
+  desc:'DAC/MAC, capabilities, namespaces, cgroups, SELinux, AppArmor, seccomp, LSM.',
+  qs:[
+  ['What is the difference between DAC (Discretionary Access Control) and MAC (Mandatory Access Control)? Give Linux examples of each.','T','B'],
+  ['What are Linux capabilities? How do they subdivide root privilege? Give 5 capability examples and what they grant.','T','B'],
+  ['What is the LSM (Linux Security Module) framework? How does SELinux plug into it?','T','I'],
+  ['What are Linux namespaces? List all 8 namespace types and what each isolates.','T','B'],
+  ['What are cgroups (v1 and v2)? How do they limit CPU, memory, and I/O resources for a group of processes?','T','B'],
+  ['What is seccomp-BPF? How does Docker use it to restrict syscalls available to containers?','T','I'],
+  ['What is SELinux? Explain the concepts of domains, types, roles, and transitions in a type enforcement policy.','T','I'],
+  ['What is AppArmor? How does its profile system differ from SELinux type enforcement?','T','I'],
+  ['What is a capability bounding set? How does it prevent privilege escalation even if a process gains a capability?','T','I'],
+  ['What are ambient capabilities? How do they allow non-root executables to retain capabilities across exec()?','T','I'],
+  ['Write a program that drops all capabilities except CAP_NET_BIND_SERVICE before binding to port 80. Verify with getpcaps.','C','I'],
+  ['Create a new user namespace where your user ID maps to root. Verify you can mount a filesystem inside the namespace but cannot affect the host.','C','I'],
+  ['Write a seccomp-BPF policy using libseccomp that allows a web server to run with only 12 syscalls. Verify with strace that no others are called.','C','A'],
+  ['Create a cgroup v2 hierarchy that limits a process to 1 CPU core and 256 MB of memory. Use cgexec to run a stress test inside it.','C','I'],
+  ['Write a minimal AppArmor profile for a network service. Allow only read access to /etc/config, TCP listen on port 8080, and log all denials.','C','I'],
+  ['Use audit2allow to convert SELinux AVC denials into a policy module. Install the module and verify the denial disappears.','C','I'],
+  ['Explain the Linux privileged namespace attack surface. What can a process with a user namespace do that makes it a security concern?','T','A'],
+  ['What is Landlock? How does it allow an unprivileged process to sandbox itself using the LSM framework?','T','A'],
+  ['What is the difference between a setuid binary and a binary with file capabilities? Why are file capabilities preferred?','T','I'],
+  ['Design a container security model for a multi-tenant embedded system. Specify which namespaces, cgroup limits, seccomp policies, and LSM profiles you would use.','T','A']
+  ]
+},
+{
+  id:'m20',phase:3,num:'20',icon:'🗄️',
+  title:'Storage & Filesystems Internals',
+  desc:'ext4 internals, btrfs, ZFS, dm-crypt, LVM, io_uring, filesystem implementation.',
+  qs:[
+  ['Describe the on-disk structure of ext4: superblock, block group descriptors, inode table, and data blocks.','T','I'],
+  ['What is extents in ext4? How does it differ from the indirect block addressing used in ext2?','T','I'],
+  ['What is btrfs? What features does it provide that ext4 lacks (snapshots, checksums, subvolumes)?','T','I'],
+  ['What is LVM (Logical Volume Manager)? Explain PVs, VGs, and LVs and how they provide flexible storage.','T','B'],
+  ['What is dm-crypt? How does it integrate with the device mapper to provide transparent disk encryption?','T','I'],
+  ['What is io_uring? How do its submission and completion rings work to eliminate per-operation syscall overhead?','T','I'],
+  ['What is the difference between journaling and log-structured filesystems? Give an example of each.','T','I'],
+  ['What is RAID? Compare RAID 0, 1, 5, 6, and 10 for performance, capacity, and fault tolerance.','T','B'],
+  ['What is a union mount? How does overlayfs implement copy-on-write semantics for container layers?','T','I'],
+  ['What is the difference between a sparse file and a regular file? How do punch_hole and fallocate() work?','T','I'],
+  ['Write an io_uring program that reads 1000 files asynchronously using IORING_OP_READ and a single thread. Compare throughput with synchronous pread().','C','I'],
+  ['Write a FUSE filesystem that implements a virtual /proc-like directory with custom files. Support read, readdir, and getattr operations.','C','I'],
+  ['Set up LVM thin provisioning with overcommit. Create a thin pool, allocate 3 thin LVs summing to more than pool capacity. Observe behavior when full.','C','I'],
+  ['Create a dm-crypt volume using LUKS2 format. Benchmark its read/write throughput vs an unencrypted volume using fio.','C','I'],
+  ['Write a program that uses fallocate(FALLOC_FL_PUNCH_HOLE) to punch holes in a file and verify with lseek(SEEK_DATA/SEEK_HOLE) that the holes are sparse.','C','I'],
+  ['Use blktrace on an ext4 filesystem during a git clone operation. Identify the ratio of metadata to data I/O.','C','I'],
+  ['Explain the write barriers and flush sequences required to ensure filesystem consistency after a crash without journaling.','T','A'],
+  ['What is bcache and dm-cache? How do they use SSDs as a cache layer for slower spinning disks?','T','I'],
+  ['What is copy-on-write at the filesystem level (btrfs)? How does it allow snapshots to be created in O(1) time?','T','I'],
+  ['Design a storage stack for a database that needs 99.999% durability, 1M IOPS, and the ability to roll back to any point in the last 24 hours.','T','A']
+  ]
+},
+{
+  id:'m21',phase:3,num:'21',icon:'🔄',
+  title:'Power Management & cpufreq',
+  desc:'ACPI, cpufreq governors, runtime PM, suspend/resume, wakeup sources, energy-aware scheduling.',
+  qs:[
+  ['What is ACPI? Describe the C-states (idle states) and P-states (performance states) it defines.','T','B'],
+  ['What are cpufreq governors? Compare performance, powersave, ondemand, conservative, and schedutil.','T','B'],
+  ['What is runtime power management in the kernel? How does pm_runtime_put() trigger device suspend?','T','I'],
+  ['What is the difference between system suspend (S3), hibernate (S4), and freeze (S2idle)?','T','B'],
+  ['What is a wakeup source (wakeup_source_register)? How does it prevent the system from suspending while a driver is active?','T','I'],
+  ['What is energy-aware scheduling (EAS)? How does it place tasks on the most energy-efficient CPU in a heterogeneous (big.LITTLE) system?','T','I'],
+  ['What is the thermal framework (thermal_zone_device)? How does it interact with cpufreq and cooling devices?','T','I'],
+  ['What is the generic clock framework (CCF)? How do drivers request and enable clocks using clk_get() and clk_enable()?','T','I'],
+  ['What is a suspend notifier? How does a driver register to be called before and after system suspend?','T','I'],
+  ['What is tickless idle (CONFIG_NO_HZ_IDLE)? How does the kernel avoid timer interrupts on idle CPUs?','T','I'],
+  ['Write a kernel module that registers a power management domain and implements suspend/resume callbacks. Verify they are called during echo mem > /sys/power/state.','C','I'],
+  ['Write a sysfs interface that allows user space to read the current CPU frequency and available governors. Switch governors and verify the frequency changes with cpupower.','C','B'],
+  ['Write a platform driver that implements runtime PM: suspends the device after 1 second of inactivity and resumes it on the next I/O request.','C','I'],
+  ['Use powertop to identify the top wakeup sources on a laptop. Reduce wakeups by tuning the NIC power management and USB autosuspend.','C','B'],
+  ['Implement a thermal cooling device in a kernel module that reduces an LED brightness when a temperature threshold is exceeded.','C','I'],
+  ['Use perf power-events to measure energy consumption of a workload. Compare energy efficiency of SCHED_IDLE vs SCHED_NORMAL for a background batch job.','C','I'],
+  ['Explain the challenges of suspend/resume in a driver that uses DMA: what must be done before suspend and what must be re-initialized after resume?','T','I'],
+  ['What is CPU hotplug? How does the kernel handle bringing CPUs online and offline dynamically and what driver considerations apply?','T','I'],
+  ['What is the relationship between cpufreq boost (turbo) and thermal limits? How does the kernel balance them?','T','I'],
+  ['Design the power management strategy for a battery-powered IoT gateway that must maintain a 5ms wakeup latency while achieving 10+ years battery life.','T','A']
+  ]
+},
+{
+  id:'m22',phase:3,num:'22',icon:'🖨️',
+  title:'USB & PCI Subsystems',
+  desc:'USB core, URBs, USB classes, PCIe enumeration, driver binding, hotplug.',
+  qs:[
+  ['What is the USB architecture? Describe the host controller, root hub, hubs, and devices from the kernel perspective.','T','B'],
+  ['What is a URB (USB Request Block)? How does it represent an asynchronous USB transfer?','T','B'],
+  ['What are USB transfer types (control, bulk, interrupt, isochronous)? When would a driver use each?','T','B'],
+  ['What is the USB device model in the kernel: usb_device, usb_interface, usb_driver?','T','B'],
+  ['What is USB hotplug? How does the kernel discover a newly plugged device and bind it to a driver?','T','B'],
+  ['What is PCIe enumeration? How does the BIOS/firmware enumerate devices and assign resources?','T','I'],
+  ['What is the PCIe link training process? What are the different link speeds (Gen1 through Gen5)?','T','I'],
+  ['What is power management in PCIe? Explain D-states (D0, D1, D2, D3hot, D3cold) and ASPM.','T','I'],
+  ['What is a PCIe switch? How does it affect DMA peer-to-peer transfers and interrupt routing?','T','I'],
+  ['What is USB gadget mode? How does the kernel implement USB device (not host) mode on platforms like Raspberry Pi?','T','I'],
+  ['Write a USB driver for a simple HID device. Implement probe(), disconnect(), and an interrupt URB that reads button state and prints it to dmesg.','C','I'],
+  ['Write a PCIe driver that performs a loopback DMA test: write a pattern to device memory via BAR, DMA it back, verify integrity.','C','A'],
+  ['Write a USB gadget driver that presents the system as a USB mass storage device backed by a file. Use the configfs gadget API.','C','A'],
+  ['Use usbmon to capture USB traffic between a device and its host driver. Decode the URBs for a USB HID device.','C','I'],
+  ['Use lspci -vvv to decode the capabilities of a PCIe network card: link speed, ASPM state, MSI-X table size, power state.','C','B'],
+  ['Write a program using libusb to enumerate all USB devices, read their device descriptor, and list their interfaces and endpoints.','C','B'],
+  ['Explain the USB descriptor hierarchy: device descriptor, configuration descriptor, interface descriptor, endpoint descriptor.','T','B'],
+  ['What is USB 3.x SuperSpeed? How does it differ from USB 2.0 at the physical and protocol layers?','T','I'],
+  ['What is XHCI? How does it differ from EHCI and OHCI? What advantages does a single host controller have for USB 3.x?','T','I'],
+  ['Design a USB sensor hub driver that supports hotplug of up to 8 sensor modules. Each module has a unique USB product ID and its own data format.','T','A']
+  ]
+},
+{
+  id:'m23',phase:3,num:'23',icon:'🎥',
+  title:'V4L2 & Media Subsystem',
+  desc:'Video4Linux2, media controller, MIPI CSI-2, ISP pipelines, DMA-BUF, video buffers.',
+  qs:[
+  ['What is V4L2 (Video4Linux2)? What types of devices does it support beyond traditional cameras?','T','B'],
+  ['What is the V4L2 buffer model? Explain MMAP, USERPTR, and DMABUF buffer types.','T','B'],
+  ['What is the V4L2 streaming I/O model? Walk through the sequence: REQBUFS, QBUF, STREAMON, DQBUF.','T','B'],
+  ['What is the media controller framework? How does it represent a pipeline of interconnected subdevices?','T','I'],
+  ['What is a V4L2 subdevice (v4l2_subdev)? How does an ISP driver use subdevices for individual pipeline blocks?','T','I'],
+  ['What is MIPI CSI-2? How does it connect camera sensors to SoC image signal processors?','T','I'],
+  ['What is DMA-BUF? How does it allow zero-copy buffer sharing between a camera driver and a GPU encoder?','T','I'],
+  ['What is the V4L2 control framework? How do you add a custom control (e.g., exposure, gain) to a sensor driver?','T','I'],
+  ['What is the difference between a video capture device and a video output (display) device in V4L2?','T','B'],
+  ['What is the V4L2 M2M (memory-to-memory) device? How is it used for hardware video codecs?','T','I'],
+  ['Write a V4L2 user-space application that opens /dev/video0, negotiates YUYV format at 640x480, and captures 30 frames using mmap buffers. Save one frame as a raw file.','C','I'],
+  ['Write a V4L2 sensor driver for a simple I2C camera sensor. Implement s_stream, set_fmt, and enum_mbus_code. Register it as a subdevice.','C','A'],
+  ['Write a media-ctl pipeline configuration script for a camera ISP pipeline. Connect sensor -> CSI-2 RX -> ISP -> video node using media-ctl -l.','C','I'],
+  ['Write a GStreamer pipeline that captures from V4L2, encodes with V4L2 M2M h264 encoder, and saves to file. Verify hardware acceleration is used.','C','I'],
+  ['Use v4l2-ctl to query all supported formats, frame sizes, and frame intervals for a camera. Change format and verify with v4l2-ctl --stream-mmap.','C','B'],
+  ['Write a DMA-BUF sharing example: a V4L2 capture driver exports a buffer, an OpenGL ES program imports it and renders without CPU copy.','C','A'],
+  ['Explain the V4L2 request API. How does it allow user space to synchronize capture parameters with specific frames?','T','A'],
+  ['What is the difference between V4L2 and libcamera? Why was libcamera created and what problem does it solve for complex ISP pipelines?','T','I'],
+  ['What is the CIF (Camera Interface) vs CSI-2 vs parallel DVP interface? When would an embedded camera use each?','T','I'],
+  ['Design a multi-camera synchronization system for a stereo vision module. Both sensors must start capturing at the same microsecond. Describe the hardware trigger, device tree, and V4L2 driver design.','T','A']
+  ]
+},
+{
+  id:'m24',phase:3,num:'24',icon:'🔧',
+  title:'eBPF & Kernel Observability',
+  desc:'eBPF programs, maps, libbpf, CO-RE, BCC, bpftrace, tracing programs, XDP, TC.',
+  qs:[
+  ['What is eBPF? How does it allow safe, verifiable programs to run in the kernel without a module?','T','B'],
+  ['What is the eBPF verifier? What properties does it enforce and what programs does it reject?','T','I'],
+  ['What are eBPF maps? List 5 map types (hash, array, perf_event_array, ringbuf, lru_hash) and their use cases.','T','B'],
+  ['What is BTF (BPF Type Format)? How does it enable CO-RE (Compile Once, Run Everywhere)?','T','I'],
+  ['What is libbpf? How does it load and attach eBPF programs from user space?','T','I'],
+  ['What is BCC (BPF Compiler Collection)? When would you use BCC Python vs libbpf C for an eBPF tool?','T','B'],
+  ['What is bpftrace? How does it provide a high-level scripting language for kernel tracing?','T','B'],
+  ['What is an eBPF tail call? How does it allow programs to chain without growing the stack?','T','A'],
+  ['What is a kfunc (BPF kernel function)? How does it allow eBPF programs to call kernel helper functions safely?','T','A'],
+  ['What is eBPF for security (LSM programs)? How does it allow policy enforcement at LSM hook points?','T','A'],
+  ['Write an eBPF kprobe program using libbpf that attaches to sys_open and prints the filename and process name for every file opened by a given PID.','C','I'],
+  ['Write a bpftrace one-liner that shows a histogram of do_sys_openat2 latency in microseconds, grouped by process name.','C','B'],
+  ['Write an eBPF XDP program that counts packets per source IP and exposes the counts via a BPF hash map readable from user space.','C','I'],
+  ['Write an eBPF TC (Traffic Control) program that limits a specific process to 10 Mbps egress by dropping packets when a per-CPU rate counter exceeds the limit.','C','A'],
+  ['Write a CO-RE eBPF program using skeleton headers generated by bpftool. Verify it runs on kernels with different struct layouts.','C','A'],
+  ['Use bpftool prog list and bpftool map dump to inspect running eBPF programs and their map contents on the system.','C','B'],
+  ['Explain the eBPF verifier\'s check for bounded loops. How does the verifier prove a loop terminates?','T','A'],
+  ['What is eBPF cgroup programs? How do they enforce per-container network and resource policies?','T','I'],
+  ['What is Cilium? How does it use eBPF to replace iptables in Kubernetes networking?','T','I'],
+  ['Design an eBPF-based observability system for a microservices deployment that captures service-to-service latency, error rates, and network topology with zero code changes to the applications.','T','A']
+  ]
+},
+{
+  id:'m25',phase:3,num:'25',icon:'🏗️',
+  title:'Kernel Hardening & Security Features',
+  desc:'SMEP/SMAP, stack canaries, CFI, FORTIFY_SOURCE, Spectre/Meltdown mitigations, kernel self-protection.',
+  qs:[
+  ['What is SMEP (Supervisor Mode Execution Prevention)? How does it prevent kernel code from executing user-space pages?','T','I'],
+  ['What is SMAP (Supervisor Mode Access Prevention)? How does it prevent the kernel from accidentally reading user data?','T','I'],
+  ['What is a stack canary? How does GCC implement it and how does it detect stack buffer overflows?','T','B'],
+  ['What is CFI (Control Flow Integrity)? How does KCFI in the kernel prevent ROP (Return-Oriented Programming) attacks?','T','I'],
+  ['What is FORTIFY_SOURCE? Which standard library functions does it protect and how?','T','B'],
+  ['What is Spectre and Meltdown? Explain the microarchitectural vulnerabilities and the kernel mitigations (KPTI, retpolines).','T','I'],
+  ['What is KASLR (Kernel ASLR)? What are its limitations and how does FG-KASLR (Fine-Grained KASLR) improve it?','T','I'],
+  ['What is kernel lockdown mode? What does it prevent and how does it interact with Secure Boot?','T','I'],
+  ['What is the kernel\'s hardened usercopy (hardened_usercopy)? What class of bugs does it prevent?','T','I'],
+  ['What are kernel stack guards? How does the kernel detect stack overflows in interrupt context?','T','I'],
+  ['Enable KASAN and stack canaries in a kernel build. Write a module with a stack buffer overflow and show the KASAN/canary detection report.','C','I'],
+  ['Demonstrate a use-after-free in a kernel module. Show that KASAN detects it with a full report including allocation and free call stacks.','C','I'],
+  ['Write a kernel module that bypasses SMEP by temporarily disabling CR4.SMEP. Explain why this is only possible as root and what kernel hardening prevents it in production.','C','A'],
+  ['Use syzkaller (kernel fuzzer) against a VM. Configure a small grammar for a character device ioctl interface and run it for 10 minutes. Analyze any crashes.','C','A'],
+  ['Benchmark the performance overhead of Spectre mitigations (retpolines, IBRS, STIBP) using perf stat on a CPU-intensive workload.','C','I'],
+  ['Use checksec to analyze the security properties of a kernel module: PIE, RELRO, canary, NX. Explain what each means.','C','B'],
+  ['Explain the GDT and IDT attack surface on x86. How does KPTI and the shadow page table defend against kernel pointer leaks?','T','A'],
+  ['What is the difference between struct_randomization and CONFIG_GCC_PLUGIN_RANDSTRUCT? How does field randomization defeat info leak attacks?','T','A'],
+  ['What is a kernel info leak? Give 3 examples of kernel functions or /proc files that have historically leaked kernel addresses.','T','I'],
+  ['Design a kernel hardening configuration for a security-critical embedded device. Select 10 Kconfig options and explain the security benefit and performance cost of each.','T','A']
+  ]
+},
+{
+  id:'m26',phase:3,num:'26',icon:'🌍',
+  title:'Containerization & Namespaces Deep Dive',
+  desc:'Namespace internals, cgroup v2, container primitives, OCI, runc, seccomp profiles.',
+  qs:[
+  ['Explain the implementation of PID namespaces. How does the kernel translate PIDs between namespaces in /proc?','T','I'],
+  ['What is a mount namespace? How does unshare --mount allow a process to have a private mount point invisible to other processes?','T','I'],
+  ['What is the user namespace? What UID/GID mapping mechanism allows a non-root user to appear as root inside a container?','T','B'],
+  ['What is a network namespace? Walk through all the network objects that are isolated: interfaces, routes, iptables, sockets.','T','I'],
+  ['What are cgroups v2 (cgroupv2)? How does the unified hierarchy differ from the v1 multi-hierarchy model?','T','I'],
+  ['What is the cgroup v2 memory controller? Explain memory.max, memory.high, memory.swap.max, and how OOM works in a cgroup.','T','I'],
+  ['What is runc? How does it implement OCI runtime spec to create a container from an OCI bundle?','T','I'],
+  ['What is seccomp-BPF in the context of containers? How does Docker generate its default seccomp profile?','T','I'],
+  ['What is the difference between a container and a VM from the kernel perspective? What is the isolation boundary in each case?','T','B'],
+  ['What is the OCI image spec? How does it layer filesystem changes and what format does each layer use?','T','I'],
+  ['Create a minimal container from scratch using unshare(1): new PID, mount, network, and UTS namespaces. Mount a minimal rootfs and exec a shell.','C','I'],
+  ['Write a Go or C program using clone() syscall to create a new PID namespace. Verify the new process sees itself as PID 1.','C','I'],
+  ['Set up cgroup v2 limits for a container-like process: limit to 1 CPU (cpu.max), 256 MB memory (memory.max), and verify limits with stress-ng.','C','I'],
+  ['Write a custom seccomp profile in JSON format that blocks ptrace, mount, and pivot_root. Apply it using docker run --security-opt seccomp=profile.json.','C','I'],
+  ['Use nsenter to enter the namespaces of a running container without using docker exec. Inspect its network and PID namespaces from host.','C','I'],
+  ['Write a minimal container runtime in C: unshare namespaces, pivot_root to a rootfs, mount /proc, and exec the container entrypoint.','C','A'],
+  ['Explain the vulnerability in user namespaces that allows privilege escalation. What kernel patches and distro configurations mitigate it?','T','A'],
+  ['What is veth pair lifecycle in a container network? Trace from container creation to packet delivery across the veth pair and bridge.','T','I'],
+  ['What is cgroup freezer? How does Kubernetes use it to pause and resume pods?','T','I'],
+  ['Design the kernel-level isolation strategy for a multi-tenant serverless platform where untrusted code runs next to each other with strict isolation requirements.','T','A']
+  ]
+},
+{
+  id:'m27',phase:3,num:'27',icon:'📊',
+  title:'Performance Tuning & Profiling',
+  desc:'perf, flamegraphs, CPU performance counters, scheduler tuning, memory bandwidth, network performance.',
+  qs:[
+  ['What is a hardware performance counter? Name 5 events (cache-misses, branch-misses, cpu-cycles, instructions, page-faults) and what they measure.','T','B'],
+  ['What is the difference between perf stat, perf record, and perf report? When would you use each?','T','B'],
+  ['What is a flame graph? How do you generate one from a perf record output and what does it tell you?','T','B'],
+  ['What is the perf memory profiling (perf mem)? How does it identify load/store latency bottlenecks?','T','I'],
+  ['What is the difference between on-CPU profiling and off-CPU profiling? When is off-CPU time the bottleneck?','T','I'],
+  ['What is THP (Transparent Huge Pages) and how does it affect profiling? When does it help and when does it hurt latency?','T','I'],
+  ['What is NUMA balancing (automatic NUMA balancing)? How does the kernel migrate pages and tasks to reduce cross-NUMA accesses?','T','I'],
+  ['What is cache line bouncing? How does false sharing cause it and how does padding or SPLIT_LOCK_DETECT help?','T','I'],
+  ['What is branch prediction in modern CPUs? How does branch misprediction affect kernel performance?','T','I'],
+  ['What is the relationship between TCP receive buffer size, network throughput, and the BDP (Bandwidth-Delay Product)?','T','I'],
+  ['Use perf stat to measure IPC (instructions per cycle) and cache miss rate for a matrix multiply kernel. Optimize the loop order and measure improvement.','C','B'],
+  ['Generate a CPU flame graph for a running web server under load. Identify the top 3 hotspot functions and propose optimizations.','C','I'],
+  ['Use perf c2c to detect false sharing in a multi-threaded program. Fix the false sharing with cache-line padding and measure the improvement.','C','I'],
+  ['Use numactl and numastat to analyze NUMA memory placement for a memory-intensive workload. Compare performance with and without NUMA binding.','C','I'],
+  ['Use ss -s and ethtool -S to diagnose network receive drops on a busy server. Tune the NIC ring buffer size and socket receive buffer.','C','I'],
+  ['Use turbostat and intel_pstate to analyze CPU frequency scaling during a workload. Identify thermal throttling events and their performance impact.','C','I'],
+  ['Explain the relationship between huge pages and TLB coverage. How does increasing TLB coverage with huge pages reduce cache-miss equivalent latency?','T','I'],
+  ['What is the Linux packet receive path bottleneck at 100 Gbps? Which kernel mechanisms (GRO, RPS, RFS, XPS) address which bottlenecks?','T','A'],
+  ['What is memory bandwidth saturation? How do you detect it with perf and what architectural changes in hardware help (HBM, CXL)?','T','A'],
+  ['Design a performance baseline and regression testing methodology for a Linux kernel patch. What metrics, tools, and workloads would you use?','T','A']
+  ]
+},
+{
+  id:'m28',phase:3,num:'28',icon:'🛠️',
+  title:'System Design for Embedded & Production Linux',
+  desc:'Yocto, buildroot, initramfs, OTA updates, watchdog, kernel hardening for production, BSP development.',
+  qs:[
+  ['What is Yocto Project? How does it differ from Buildroot for embedded Linux system building?','T','B'],
+  ['What is a BSP (Board Support Package)? What components does a BSP for a new SoC typically include?','T','B'],
+  ['What is an OTA (Over-the-Air) update strategy for an embedded Linux device? Compare A/B partition, delta updates, and full image updates.','T','I'],
+  ['What is a hardware watchdog? How does the kernel watchdog driver interact with user-space watchdog daemons?','T','B'],
+  ['What is read-only root filesystem? What directories must be writable and how do you achieve this with tmpfs overlays?','T','I'],
+  ['What is U-Boot? What does it do between power-on and kernel launch on an ARM platform?','T','B'],
+  ['What is the difference between a monolithic kernel image and a modular kernel for embedded use? When is each appropriate?','T','B'],
+  ['What is dm-verity? How does it provide cryptographic integrity verification of the root filesystem?','T','I'],
+  ['What is Secure Boot on ARM (UEFI Secure Boot vs ARM Trusted Firmware)? How does the chain of trust work?','T','I'],
+  ['What is the difference between a factory image, a base image, and an application layer in an embedded update strategy?','T','I'],
+  ['Build a minimal Buildroot system for QEMU ARM: include a minimal busybox userland, dropbear SSH, and your own kernel module. Boot and SSH into it.','C','I'],
+  ['Write a watchdog keepalive daemon in C that monitors a list of critical processes. If any die, stop feeding the watchdog and let it reset the system.','C','I'],
+  ['Set up an A/B partition OTA system using RAUC or SWUpdate. Perform an update, verify rollback on boot failure.','C','A'],
+  ['Write a Yocto layer that adds a custom kernel module, a systemd service, and a configuration file to a Poky image.','C','A'],
+  ['Implement a read-only rootfs with tmpfs overlay for /var, /tmp, and /run. Use an ext4 partition with dm-verity for integrity.','C','A'],
+  ['Write a production health monitor in C that checks CPU temperature, memory pressure, and disk I/O wait every 10 seconds. Log anomalies to a circular buffer in shared memory.','C','I'],
+  ['Explain the kernel boot time optimization techniques: defer module loading, use initcall_debug to find slow initcalls, parallelize initcalls.','T','I'],
+  ['What is OP-TEE? How does it provide a Trusted Execution Environment (TEE) alongside the normal Linux kernel on ARM TrustZone?','T','I'],
+  ['What is the difference between soft-bricking and hard-bricking an embedded device? What recovery mechanisms should every production device have?','T','B'],
+  ['Design a complete BSP strategy for bringing up Linux on a new ARM SoC with no existing upstream support: from first bootloader console to a fully functional system.','T','A']
+  ]
+},
+];
+
+const SKEY = 'linux_mastery_v1';
+const GH_REPO = 'Srivathsan98/Linux-Mastery';
+
+const ST={};
+try{Object.assign(ST,JSON.parse(localStorage.getItem(SKEY)||'{}'));}catch(e){}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(ST));}catch(e){}}
+function k(mid,qi){return mid+'_'+qi;}
+function isChecked(mid,qi){return!!ST[k(mid,qi)];}
+function toggle(mid,qi){ST[k(mid,qi)]=!ST[k(mid,qi)];save();refreshAll(mid,qi);}
+
+function saveIssue(mid,qi,val){
+  const ik='iss_'+mid+'_'+qi;
+  if(val.trim()){ST[ik]=val.trim();}else{delete ST[ik];}
+  save();
+  const link=document.getElementById('issl-'+mid+'-'+qi);
+  if(link){
+    if(val.trim()){link.href='https://github.com/'+GH_REPO+'/issues/'+val.trim();link.className='issue-open active';}
+    else{link.href='#';link.className='issue-open';}
+  }
+}
+
+function modStats(m){let d=0;m.qs.forEach((_,i)=>{if(isChecked(m.id,i))d++;});return{done:d,total:m.qs.length};}
+function allStats(){let d=0,t=0,md=0;MODULES.forEach(m=>{const s=modStats(m);d+=s.done;t+=s.total;if(s.done===s.total&&s.total>0)md++;});return{done:d,total:t,modsDone:md};}
+
+function refreshAll(mid,qi){
+  const row=document.getElementById('row-'+mid+'-'+qi);
+  if(row){const c=isChecked(mid,qi);row.className=c?'checked':'';const cc=row.querySelector('.cb-check');if(cc)cc.style.display=c?'block':'none';}
+  const m=MODULES.find(x=>x.id===mid);
+  const s=modStats(m);const pct=s.total?Math.round(s.done/s.total*100):0;
+  const fill=document.getElementById('mfill-'+mid);if(fill)fill.style.width=pct+'%';
+  const cnt=document.getElementById('mcnt-'+mid);if(cnt)cnt.textContent=s.done+'/'+s.total;
+  const badge=document.getElementById('mbadge-'+mid);
+  if(badge){
+    if(pct===0){badge.className='mod-badge badge-ns';badge.textContent='Not started';}
+    else if(pct<100){badge.className='mod-badge badge-ip';badge.textContent=pct+'% done';}
+    else{badge.className='mod-badge badge-done';badge.textContent='Mastered \u2713';}
+  }
+  const ms=document.getElementById('ms-pct-'+mid);if(ms)ms.textContent=pct+'%';
+  const mpf=document.getElementById('ms-fill-'+mid);if(mpf)mpf.style.width=pct+'%';
+  const as=allStats();const ap=as.total?Math.round(as.done/as.total*100):0;
+  document.getElementById('done-count').textContent=as.done;
+  document.getElementById('total-count').textContent=as.total;
+  document.getElementById('pct-label').textContent=ap+'%';
+  document.getElementById('mod-done').textContent=as.modsDone;
+  document.getElementById('overall-fill').style.width=ap+'%';
+  const btn=document.getElementById('nav-'+mid);
+  if(btn)btn.className='mod-btn'+(pct===100?' done':pct>0?' partial':'');
+}
+
+let curPhase=0;
+function filterPhase(p){
+  curPhase=p;
+  document.querySelectorAll('.phase-btn').forEach((b,i)=>b.className='phase-btn'+(i===p?' active':''));
+  renderContent();
+}
+
+function renderModNav(){
+  const as=allStats();
+  document.getElementById('s-total').textContent=as.total;
+  let h='';
+  MODULES.forEach(m=>{
+    const s=modStats(m);const p=s.total?Math.round(s.done/s.total*100):0;
+    h+=`<button id="nav-${m.id}" class="mod-btn${p===100?' done':p>0?' partial':''}" onclick="jumpToModule('${m.id}')">${m.num}</button>`;
+  });
+  document.getElementById('mod-nav').innerHTML=h;
+}
+
+function jumpToModule(id){
+  const el=document.getElementById('card-'+id);
+  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});if(!el.classList.contains('open'))el.classList.add('open');}
+}
+function toggleModule(id){document.getElementById('card-'+id).classList.toggle('open');}
+
+function renderContent(){
+  const phases=curPhase===0?[1,2,3]:[curPhase];
+  const pl={1:'Phase 01 \u00b7 OS Foundations (Beginner\u2013Intermediate)',2:'Phase 02 \u00b7 Kernel Subsystems (Intermediate)',3:'Phase 03 \u00b7 Drivers & Advanced (Advanced)'};
+  const TM={'T':'theory','C':'code','D':'debug','S':'design'};
+  const TC={'T':'tag-theory','C':'tag-code','D':'tag-debug','S':'tag-design'};
+  const DM={'B':'Beginner','I':'Intermediate','A':'Advanced'};
+  const DC={'B':'diff-B','I':'diff-I','A':'diff-A'};
+  let h='';
+  phases.forEach(ph=>{
+    const mods=MODULES.filter(m=>m.phase===ph);
+    h+=`<div class="phase-header">${pl[ph]} \u2014 ${mods.length} modules</div>`;
+    mods.forEach(m=>{
+      const s=modStats(m);const pct=s.total?Math.round(s.done/s.total*100):0;
+      let bc='mod-badge badge-ns',bt='Not started';
+      if(pct>0&&pct<100){bc='mod-badge badge-ip';bt=pct+'% done';}
+      else if(pct===100){bc='mod-badge badge-done';bt='Mastered \u2713';}
+      h+=`<div class="module" id="card-${m.id}"><div class="module-head" onclick="toggleModule('${m.id}')"><div class="module-num">${m.num}</div><div class="module-icon">${m.icon}</div><div class="module-info"><div class="module-title">${m.title}</div><div class="module-desc">${m.desc}</div></div><div class="module-right"><div class="mod-count" id="mcnt-${m.id}">${s.done}/${s.total}</div><div class="${bc}" id="mbadge-${m.id}">${bt}</div></div><div class="module-chevron">&#9654;</div></div><div class="mod-bar"><div class="mod-bar-fill" id="mfill-${m.id}" style="width:${pct}%"></div></div><div class="module-body"><div class="mod-stats"><div class="ms">Done: <span id="ms-done-${m.id}">${s.done}</span>/${s.total}</div><div class="ms">Progress: <span id="ms-pct-${m.id}">${pct}%</span></div><div class="mod-prog-bar"><div class="mod-prog-fill" id="ms-fill-${m.id}" style="width:${pct}%"></div></div></div><div class="q-table-wrap"><table><thead><tr><th></th><th>#</th><th>Question</th><th>Type</th><th>Difficulty</th><th>GitHub</th></tr></thead><tbody>`;
+      m.qs.forEach((q,qi)=>{
+        const c=isChecked(m.id,qi);
+        const issVal=ST['iss_'+m.id+'_'+qi]||'';
+        const typ=q[1]||'T', diff=q[2]||'I';
+        const qtext=q[0].replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        h+=`<tr id="row-${m.id}-${qi}" class="${c?'checked':''}" onclick="toggle('${m.id}',${qi})"><td><div class="cb"><span class="cb-check" style="display:${c?'block':'none'}">&#10003;</span></div></td><td class="q-num">${qi+1}</td><td class="q-text">${qtext}</td><td><span class="tag ${TC[typ]}">${TM[typ]}</span></td><td><span class="diff ${DC[diff]}">${DM[diff]}</span></td><td class="issue-cell" onclick="event.stopPropagation()"><input class="issue-input" id="iss-${m.id}-${qi}" type="text" placeholder="#" value="${issVal}" onchange="saveIssue('${m.id}',${qi},this.value)" /><a class="issue-open${issVal?' active':''}" id="issl-${m.id}-${qi}" href="${issVal?'https://github.com/'+GH_REPO+'/issues/'+issVal:'#'}" target="_blank">${issVal?'#'+issVal:'--'}</a></td></tr>`;
+      });
+      h+=`</tbody></table></div></div></div>`;
+    });
+  });
+  document.getElementById('content').innerHTML=h;
+}
+
+renderModNav();
+renderContent();
+const _as=allStats();const _ap=_as.total?Math.round(_as.done/_as.total*100):0;
+document.getElementById('done-count').textContent=_as.done;
+document.getElementById('total-count').textContent=_as.total;
+document.getElementById('pct-label').textContent=_ap+'%';
+document.getElementById('mod-done').textContent=_as.modsDone;
+document.getElementById('overall-fill').style.width=_ap+'%';
+
+</script>
+</body>
+</html>
